@@ -82,9 +82,11 @@ __attribute__ ((naked)) void PendSV_Handler(void)
 	
 }
 
-/* No modo cooperativo, todas as tarefas liberam o processador após a execução
-   através da auto suspensão. Desta forma, a tarefa cederá o processador para
-   outras através da chamada de serviço e não por interrupção externa. */
+/* No modo Preemptivo, a tarefa periódica será executada a cada 100ms,
+   de forma que a ocorrerá a interrupção de tarefas menos prioritárias para que
+   a execução aconteça. No momento em que a tarefa periódica finalizar, ela
+   irá se suspender, de forma que o gerenciador de tarefas escalonará novamente
+   as tarefas com prioridades menores. */
 
 /* Codigo dependente de hardware usado para 
    realizar a marca de tempo do sistema multitarefas - interrupcao */
@@ -92,7 +94,7 @@ void SysTick_Handler(void)
 {	
 	 
 	 ExecutaMarcaDeTempo();    
-	//  TrocaContexto();   /* para o uso como sistema preemptivo */
+	 TrocaContexto();   /* para o uso como sistema preemptivo */
 }
 
 void HardFault_Handler(void)

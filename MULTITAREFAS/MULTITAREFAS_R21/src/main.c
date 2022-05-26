@@ -77,9 +77,9 @@ int main(void)
 	/* Criacao das tarefas */
 	/* Parametros: ponteiro, nome, ponteiro da pilha, tamanho da pilha, prioridade da tarefa */
 	
-	CriaTarefa(tarefa_1, "Tarefa 1", PILHA_TAREFA_1, TAM_PILHA_1, 2);
+	CriaTarefa(tarefa_1, "Tarefa 1", PILHA_TAREFA_1, TAM_PILHA_1, 1);
 	
-	CriaTarefa(tarefa_2, "Tarefa 2", PILHA_TAREFA_2, TAM_PILHA_2, 1);
+	CriaTarefa(tarefa_2, "Tarefa 2", PILHA_TAREFA_2, TAM_PILHA_2, 2);
 	
 	/* Cria tarefa ociosa do sistema */
 	CriaTarefa(tarefa_ociosa,"Tarefa ociosa", PILHA_TAREFA_OCIOSA, TAM_PILHA_OCIOSA, 0);
@@ -98,29 +98,26 @@ int main(void)
 
 /* Tarefas de exemplo que usam funcoes para suspender/continuar as tarefas */
 void tarefa_1(void)
-{
-	volatile uint16_t a = 0;
-	for(;;)
-	{
-		a++;
-		TarefaEspera(1000);
-		port_pin_set_output_level(LED_0_PIN, LED_0_ACTIVE); /* Liga LED. */
-		//TarefaContinua(2);
-	}
-}
+ {
+ 	volatile uint16_t a = 0;
+ 	for(;;)
+ 	{
+ 		a++;
+ 		TarefaEspera(100);
+ 		port_pin_set_output_level(LED_0_PIN, LED_0_ACTIVE); /* Liga LED. */
+ 	}
+ }
 
-void tarefa_2(void)
-{
-	volatile uint32_t b, k = 0;
-	for(;;)
-	{
-		b++;
-		//TarefaSuspende(2);
-		TarefaEspera(10);	
-		port_pin_set_output_level(LED_0_PIN, !LED_0_ACTIVE); 	/* Turn LED off. */
-		k=100000;while(--k);
-	}
-}
+ void tarefa_2(void)
+ {
+ 	volatile uint32_t b, k = 0;
+ 	for(;;)
+ 	{
+ 		b++;
+ 		k=100000;while(--k);
+ 		port_pin_set_output_level(LED_0_PIN, !LED_0_ACTIVE); 	/* Turn LED off. */
+ 	}
+ }
 
 /* Tarefas de exemplo que usam funcoes para suspender as tarefas por algum tempo (atraso/delay) */
 void tarefa_3(void)
