@@ -54,7 +54,7 @@ void ConfiguraMarcaTempo(void)
 		*(NVIC_SYSTICK_CTRL) = NVIC_SYSTICK_CLK | NVIC_SYSTICK_INT | NVIC_SYSTICK_ENABLE;  // Inicia
 }
 
-/* rotinas de interrup��o necess�rias */
+/* rotinas de interrup��o necess�rias */
 __attribute__ ((naked)) void SVC_Handler(void)
 {
 	/* Make PendSV and SysTick the lowest priority interrupts. */
@@ -82,13 +82,17 @@ __attribute__ ((naked)) void PendSV_Handler(void)
 	
 }
 
+/* No modo cooperativo, todas as tarefas liberam o processador após a execução
+   através da auto suspensão. Desta forma, a tarefa cederá o processador para
+   outras através da chamada de serviço e não por interrupção externa. */
+
 /* Codigo dependente de hardware usado para 
    realizar a marca de tempo do sistema multitarefas - interrupcao */
 void SysTick_Handler(void)
 {	
 	 
 	 ExecutaMarcaDeTempo();    
-	 TrocaContexto();   /* para o uso como sistema preemptivo */
+	//  TrocaContexto();   /* para o uso como sistema preemptivo */
 }
 
 void HardFault_Handler(void)
